@@ -77,13 +77,13 @@ function mainMenu(person, people) {
             let personSibling = findSiblings(person[0], people)
             displayRelation(personFamily);
             displaySpouseRelation(personSpouse);
-            displaySiblingRelation(personSibling)
+            displaySiblingRelation(personSibling);
             break;
         case "descendants":
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
             // HINT: Review recursion lecture + demo for bonus user story
             let personDescendants = findPersonDescendants(person[0], people);
-            alert(personDescendants);
+            displayDescendants(personDescendants);
             break;
         case "restart":
             // Restart app() from the very beginning
@@ -241,4 +241,20 @@ function findSiblings(one, all){
 function displaySiblingRelation(person) {
     let siblingRelation = `Sibling(s): ${person[0].firstName} ${person[0].lastName}\n${person[1].firstName} ${person[1].lastName}\n${person[2].firstName} ${person[2].lastName}`
     alert(siblingRelation)
+}
+
+function findPersonDescendants(one, all){
+    let descendants = all.filter(function(el){
+        if (el.parents.includes(one.id)){
+            return true
+        } else {
+            return false
+        }
+    })
+    return descendants
+}
+
+function displayDescendants(person){
+    let descendantRelation = `Descendant(s): ${person[0].firstName} ${person[0].lastName}\n${person[1].firstName} ${person[1].lastName}\n${person[2].firstName} ${person[2].lastName}`
+    alert(descendantRelation)
 }
