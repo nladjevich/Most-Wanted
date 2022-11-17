@@ -74,8 +74,10 @@ function mainMenu(person, people) {
             // HINT: Look for a people-collection stringifier utility function to help
             let personFamily = findPersonFamily(person[0], people);
             let personSpouse = findSpouse(person[0], people);
+            let personSibling = findSiblings(person[0], people)
             displayRelation(personFamily);
             displaySpouseRelation(personSpouse);
+            displaySiblingRelation(personSibling)
             break;
         case "descendants":
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
@@ -221,6 +223,22 @@ function findSpouse(one, all) {
 }
 
 function displaySpouseRelation(person){
-    let spouseRelation = `Spouse: ${person.firstName} ${person.lastName}`;
+    let spouseRelation = `Spouse: ${person[0].firstName} ${person[0].lastName}`;
     alert(spouseRelation);
+}
+
+function findSiblings(one, all){
+    let sibling = all.filter(function(el){
+        if (one.parents[0] === el.parents[0] && one.parents[1] === el.parents[1]){
+            return true
+        } else {
+            return false
+        }
+    })
+    return sibling
+}
+
+function displaySiblingRelation(person) {
+    let siblingRelation = `Sibling(s): ${person[0].firstName} ${person[0].lastName}\n${person[1].firstName} ${person[1].lastName}\n${person[2].firstName} ${person[2].lastName}`
+    alert(siblingRelation)
 }
