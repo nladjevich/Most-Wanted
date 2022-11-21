@@ -19,7 +19,7 @@ function app(people) {
     // promptFor() is a custom function defined below that helps us prompt and validate input more easily
     // Note that we are chaining the .toLowerCase() immediately after the promptFor returns its value
     let searchType = promptFor(
-        "Do you know the name of the person you are looking for? Enter 'yes' or 'no'",
+        "Do you know the name of the person you are looking for? Enter 'yes', 'no', or 'search traits'",
         yesNo
     ).toLowerCase();
     let searchResults;
@@ -30,7 +30,7 @@ function app(people) {
             break;
         case "no":
             //! TODO #4: Declare a searchByTraits (multiple traits) function //////////////////////////////////////////
-                //! TODO #4a: Provide option to search for single or multiple //////////////////////////////////////////
+                //! TODO #4a: Provide option to search for single or multiple /////////////////////////////////////////
             searchResults = searchByTraits(people);
             break;
         default:
@@ -83,7 +83,7 @@ function mainMenu(person, people) {
             //! TODO #3: Declare a findPersonDescendants function //////////////////////////////////////////
             // HINT: Review recursion lecture + demo for bonus user story
             let personDescendants = findPersonDescendants(person[0], people);
-            displayDescendants(personDescendants);
+            displayPeople(personDescendants);
             break;
         case "restart":
             // Restart app() from the very beginning
@@ -129,7 +129,7 @@ function displayPeople(people) {
     alert(
         people
             .map(function (person) {
-                return `${person.firstName} ${person.lastName}`;
+                return `Descendants: ${person.firstName} ${person.lastName}`;
             })
             .join("\n")
     );
@@ -177,7 +177,7 @@ function promptFor(question, valid) {
  * @returns {Boolean}           The result of our condition evaluation.
  */
 function yesNo(input) {
-    return input.toLowerCase() === "yes" || input.toLowerCase() === "no";
+    return input.toLowerCase() === "yes" || input.toLowerCase() === "no" || input.toLocaleLowerCase() === "";
 }
 // End of yesNo()
 
@@ -257,4 +257,30 @@ function findPersonDescendants(one, all){
 function displayDescendants(person){
     let descendantRelation = `Descendant(s): ${person[0].firstName} ${person[0].lastName}\n${person[1].firstName} ${person[1].lastName}\n${person[2].firstName} ${person[2].lastName}`
     alert(descendantRelation)
+}
+
+function searchByTraits(){
+    let searchType = promptFor(
+        "Do you want to search by 'multiple traits' up to 5, or by a 'singular trait?' (Id, First Name, Last Name, Date of Birth, Gender, height, weight, Eye Color, Occupation)",
+        yesNo
+    ).toLowerCase();
+    let searchResults;
+    switch(searchType) {
+        case "multiple traits":
+            break;
+
+        case "single trait":
+            searchResults = searchBySingleTrait(people);
+            break;
+    }
+}
+
+function searchBySingleTrait(people){
+    let userInput = promptFor("What trait do you want to search by?", chars)
+    let userProperty = promptFor("What property do you know?", chars)
+    let foundPeople = people.filter(function(person){
+        if (person[userInput] === userProperty){
+            return true
+        }
+    })
 }
