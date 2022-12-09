@@ -125,11 +125,11 @@ function searchByName(people) {
  * to the user in the form of an alert().
  * @param {Array} people        A collection of person objects.
  */
-function displayPeople(people) {
+function displayPeople(people, display) {
     alert(
         people
             .map(function (person) {
-                return `Descendants: ${person.firstName} ${person.lastName}`;
+                return `${display} ${person.firstName} ${person.lastName}`;
             })
             .join("\n")
     );
@@ -177,7 +177,7 @@ function promptFor(question, valid) {
  * @returns {Boolean}           The result of our condition evaluation.
  */
 function yesNo(input) {
-    return input.toLowerCase() === "yes" || input.toLowerCase() === "no" || input.toLocaleLowerCase() === "";
+    return input.toLowerCase() === "yes" || input.toLowerCase() === "no" || input.toLowerCase() === "single trait" || input.toLowerCase() === "multiple traits";
 }
 // End of yesNo()
 
@@ -259,24 +259,26 @@ function displayDescendants(person){
     alert(descendantRelation)
 }
 
-function searchByTraits(){
+function searchByTraits(people){
     let searchType = promptFor(
-        "Do you want to search by 'multiple traits' up to 5, or by a 'singular trait?' (Id, First Name, Last Name, Date of Birth, Gender, height, weight, Eye Color, Occupation)",
+        "Do you want to search by 'multiple traits' up to 5, or by a 'singular trait?'",
         yesNo
     ).toLowerCase();
     switch(searchType) {
         case "multiple traits":
+            let multipleTraitSearchResult = searchByMultipleTraits(people);
+            displayPeople(multipleTraitSearchResult, 'Multiple Trait Search:');
             break;
 
         case "single trait":
-            let searchResultt = searchBySingleTrait(people);
-            displayPeople(searchResult, 'Single Trait Search')
+            let searchResult = searchBySingleTrait(people);
+            displayPeople(searchResult, 'Single Trait Search:')
             break;
     }
 }
 
 function searchBySingleTrait(people){
-    let userInput = promptFor("What trait do you want to search by?", chars)
+    let userInput = promptFor("What trait do you want to search by? (id, firstName, lastName, dateOfBirth, gender, height, weight, eyeColor, occupation)", chars)
     let userProperty = promptFor("What property do you know?", chars)
     let foundPeople = people.filter(function(person){
         if (person[userInput] === userProperty){
@@ -286,4 +288,20 @@ function searchBySingleTrait(people){
     return foundPeople
 }
 
+function searchByMultipleTraits(people){
+    let arr = []
+    let userInput = promptFor("Enter the multiple traits you want to search by seperated by spaces.", chars).split(' ');
+    for (let i = 0; i < userInput.length; i++) {
+        let userKnownProperties = promptFor(`What properties of ${userInput[i]} do you know.`, chars);
+        arr.push(userKnownProperties);
+    }
+    let foundPeople = people.filter(function(person, arr){
+        for (let i = 0; i < userInput.length; i++){
+            if (person[userInput[i]] === arr[i]) {
+                return true
+            }
+        }
+    })
+    return foundPeople
 
+}
