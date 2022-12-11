@@ -266,7 +266,7 @@ function searchByTraits(people){
     ).toLowerCase();
     switch(searchType) {
         case "multiple traits":
-            let multipleTraitSearchResult = searchByMultipleTraits(people);
+            let multipleTraitSearchResult = multisearch(people);
             displayPeople(multipleTraitSearchResult, 'Multiple Trait Search:');
             break;
 
@@ -288,6 +288,15 @@ function searchBySingleTrait(people){
     return foundPeople
 }
 
+function multisearch(people){
+    let foundResults = searchBySingleTrait(people);
+    
+    while (foundResults.length > 1){
+        let foundPerson = searchBySingleTrait(foundResults)
+    }
+    mainMenu(foundPerson, people)
+}
+
 function searchByMultipleTraits(people){
     let arr = []
     let userInput = promptFor("Enter the multiple traits you want to search by seperated by spaces.", chars).split(' ');
@@ -304,4 +313,8 @@ function searchByMultipleTraits(people){
     })
     return foundPeople
 
+}
+
+function multipletraits(people){
+    
 }
